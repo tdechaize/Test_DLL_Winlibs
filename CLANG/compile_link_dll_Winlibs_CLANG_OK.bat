@@ -48,7 +48,7 @@ set "PAR1=%~1"
 REM Mandatory, add to PATH the binary directory of compiler CLANG 32 bits included in MSYS2. You can adapt this directory at your personal software environment.
 SET PATH=C:\mingw32\bin;%PATH%
 clang --version | find "clang version"
-if PAR1 == "TWO" (
+if "%PAR1%" == "TWO" (
 echo.  ***************************          Generation de la DLL en deux passes          *******************
 REM Options used with CLANG/LLVM compiler 64 bits (very similar with syntax of gcc compiler) :
 REM 	-Wall									-> set all warning during compilation
@@ -126,7 +126,7 @@ set "PAR1=%~1"
 REM      Mandatory, add to PATH the binary directory of compiler CLANG 64 bits included in MSYS2. You can adapt this directory at your personal software environment.
 SET PATH=C:\mingw64\bin;%PATH%
 clang --version | find "clang version"
-if PAR1 == "TWO" (
+if "%PAR1%" == "TWO" (
 echo.  ***************************          Generation de la DLL en deux passes          *******************
 REM Options used with CLANG/LLVM compiler 64 bits (very similar with syntax of gcc compiler) :
 REM 	-Wall									-> set all warning during compilation

@@ -431,7 +431,7 @@ set "PAR1=%~1"
 REM Mandatory, add to PATH the binary directory of compiler CLANG 32 bits included in MSYS2. You can adapt this directory at your personal software environment.
 SET PATH=C:\mingw32\bin;%PATH%
 clang --version | find "clang version"
-if PAR1 == "TWO" (
+if "%PAR1%" == "TWO" (
 echo.  ***************************          Generation de la DLL en deux passes          *******************
 REM Options used with CLANG/LLVM compiler 64 bits (very similar with syntax of gcc compiler) :
 REM 	-Wall									-> set all warning during compilation
@@ -509,7 +509,7 @@ set "PAR1=%~1"
 REM      Mandatory, add to PATH the binary directory of compiler CLANG 64 bits included in MSYS2. You can adapt this directory at your personal software environment.
 SET PATH=C:\mingw64\bin;%PATH%
 clang --version | find "clang version"
-if PAR1 == "TWO" (
+if "%PAR1%" == "TWO" (
 echo.  ***************************          Generation de la DLL en deux passes          *******************
 REM Options used with CLANG/LLVM compiler 64 bits (very similar with syntax of gcc compiler) :
 REM 	-Wall									-> set all warning during compilation
@@ -877,7 +877,7 @@ DLL detaching from process...
 
 Le résultat produit en deux passes :
 
-compile_link_dll_Winlibs_CLANG_OK.bat TWO ALL
+"compile_link_dll_Winlibs_CLANG_OK.bat TWO ALL"
  Lancement du batch de generation d'une DLL et deux tests de celle-ci avec CLANG 32 bits ou 64 bits de MSYS2
   *********  Quelques caracteristiques du systeme hebergeant l'environnement de developpement.   ***********
 Name
@@ -892,7 +892,9 @@ OSArchitecture
   **********      Pour cette generation le premier parametre vaut "TWO" et le deuxieme "ALL".     *************
   ******************            Compilation de la DLL en mode 32 bits        *******************
 (built by Brecht Sanders) clang version 17.0.5
-  ***************************                Generation de la DLL en une passe                    *******************
+  ***************************          Generation de la DLL en deux passes          *******************
+  ***************       Compilation de la DLL avec MSYS2  CLANG 32 bits              *****************
+  ***************          Edition de liens de la DLL avec MSYS2  CLANG 32 bits        *******************
 EXPORTS
     Adddbl @1
     Addint @2
@@ -905,7 +907,7 @@ EXPORTS
     Squarint @9
     Subdbl @10
     Subint @11
-  ************                                   Dump des sysboles exportes de la DLL dll_core.dll                                        *************
+  ***************              Listage des fonctions exportees de la DLL              *******************
  * [dll_core.dll] Found PE image
 ;
 ; Definition file of dll_core.dll
@@ -976,7 +978,9 @@ Le carre de 7.3 par 7.3 vaut 53.29.                   (from script python testdl
 DLL detaching from process...
   ******************          Compilation de la DLL en mode 64 bits        *******************
 (built by Brecht Sanders) clang version 17.0.5
-  ***************************                Generation de la DLL en une passe                    *******************
+  ***************************          Generation de la DLL en deux passes          *******************
+  ***************       Compilation de la DLL avec MSYS2  CLANG 64 bits                *****************
+  ***************          Edition de liens de la DLL avec MSYS2  CLANG 64 bits        *******************
 EXPORTS
     Adddbl @1
     Addint @2
@@ -989,7 +993,7 @@ EXPORTS
     Squarint @9
     Subdbl @10
     Subint @11
-  ************                                   Dump des sysboles exportes de la DLL dll_core64.dll                           *************
+  ***************              Listage des fonctions exportees de la DLL dll_core64.dll            *******************
  * [dll_core64.dll] Found PE+ image
 ;
 ; Definition file of dll_core64.dll
@@ -1060,8 +1064,8 @@ Le carre de 7.3 par 7.3 vaut 53.29.                   (from script python testdl
 DLL detaching from process...
         Fin de la generation de la DLL et des tests avec CLANG 32 bits ou 64 bits inclus dans Winlibs
 
-Avec ces très bons résultats, je m'arrête ici pour ce bilan qui devait aller au bout des tests avec des DLL générées par 
-le compilateur GCC inclus dans les environnements Winlibs. 
+Avec ces très bons résultats et des test concluants, je m'arrête ici pour ce bilan qui devait aller au bout des tests 
+avec des DLL générées par le compilateur CLANG inclus dans les différents environnements Winlibs (32 et 64 bits).
 
 Conclusion :
 

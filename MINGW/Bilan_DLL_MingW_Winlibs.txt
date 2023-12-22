@@ -432,7 +432,7 @@ set "PAR1=%~1"
 REM Mandatory, add to PATH the binary directory of compiler CLANG 32 bits included in MSYS2. You can adapt this directory at your personal software environment.
 SET PATH=C:\mingw32\bin;%PATH%
 gcc --version | find "gcc"
-if PAR1 == "TWO" (
+if "%PAR1%" == "TWO" (
 echo.  ***************************          Generation de la DLL en deux passes          *******************
 REM Options used with CLANG/LLVM compiler 64 bits (very similar with syntax of gcc compiler) :
 REM 	-Wall									-> set all warning during compilation
@@ -443,7 +443,7 @@ REM		-m32									-> set compilation to X86 Architecture (32 bits)
 REM 	-IC:\mingw32\lib\clang\17\include -> set the include path directory (you can add many option -Ixxxxxxx to adapt your list of include path directories)  
 REM 				Remark 1 : You can replace option -m32 by -m64 to "force" compilation or linkage to X64 architecture
 echo.  ***************       Compilation de la DLL avec MSYS2  CLANG 32 bits              *****************
-gcc -Wall -c -o dll_core.obj src\dll_core.c -DBUILD_DLL -D_WIN32 -DNDEBUG -m32 -IC:\mingw32\lib\clang\17\include -IC:\mingw32\i686-w64-mingw32\include
+gcc -Wall -c -o dll_core.obj src\dll_core.c -DBUILD_DLL -D_WIN32 -DNDEBUG -m32  -IC:\mingw32\i686-w64-mingw32\include
 REM Options used with linker CLANG/LLVM 64 bits (very similar with syntax of gcc compiler) :
 REM 	-s 										-> "s[trip]", remove all symbol table and relocation information from the executable. 
 REM		-shared									-> generate a shared library => on Window, generate a DLL (Dynamic Linked Library)
@@ -510,7 +510,7 @@ set "PAR1=%~1"
 REM      Mandatory, add to PATH the binary directory of compiler CLANG 64 bits included in MSYS2. You can adapt this directory at your personal software environment.
 SET PATH=C:\mingw64\bin;%PATH%
 gcc --version | find "gcc"
-if PAR1 == "TWO" (
+if "%PAR1%" == "TWO" (
 echo.  ***************************          Generation de la DLL en deux passes          *******************
 REM Options used with CLANG/LLVM compiler 64 bits (very similar with syntax of gcc compiler) :
 REM 	-Wall									-> set all warning during compilation
@@ -521,7 +521,7 @@ REM		-m64									-> set compilation to X64 Architecture (64 bits)
 REM 	-IC:\mingw32\lib\clang\17\include -> set the include path directory (you can add many option -Ixxxxxxx to adapt your list of include path directories)  
 REM 				Remark 1 : You can replace option -m64 by -m32 to "force" compilation or linkage to X86 architecture
 echo.  ***************       Compilation de la DLL avec MingW64 inclus dans Winlibs               *****************
-gcc -Wall -c -o dll_core64.obj src\dll_core.c -DBUILD_DLL -D_WIN32 -DNDEBUG -m64 -IC:\mingw64\lib\clang\17\include -IC:\mingw64\x86_64-w64-mingw32\include
+gcc -Wall -c -o dll_core64.obj src\dll_core.c -DBUILD_DLL -D_WIN32 -DNDEBUG -m64 -IC:\mingw64\x86_64-w64-mingw32\include
 REM Options used with linker CLANG/LLVM 64 bits (very similar with syntax of gcc compiler) :
 REM 	-s 										-> "s[trip]", remove all symbol table and relocation information from the executable. 
 REM		-shared									-> generate a shared library => on Window, generate a DLL (Dynamic Linked Library)
@@ -586,6 +586,7 @@ exit /B
 
 :FIN
 echo.        Fin de la generation de la DLL et des tests avec MingW 32 bits ou 64 bits de Winlibs
+
 
 Le script python de test de la DLL est le suivant
 
@@ -892,7 +893,9 @@ OSArchitecture
   **********      Pour cette generation le premier parametre vaut "TWO" et le deuxieme "ALL".     *************
   ******************              Compilation de la DLL en mode 32 bits             *******************
 gcc (MinGW-W64 i686-ucrt-posix-dwarf, built by Brecht Sanders) 13.2.0
-  ***************************                Generation de la DLL en une passe                    *******************
+  ***************************          Generation de la DLL en deux passes          *******************
+  ***************       Compilation de la DLL avec MSYS2  CLANG 32 bits              *****************
+  ***************          Edition de liens de la DLL avec MSYS2  CLANG 32 bits        *******************
 EXPORTS
     Adddbl @1
     Addint @2
@@ -905,8 +908,7 @@ EXPORTS
     Squarint @9
     Subdbl @10
     Subint @11
-  ************                                   Dump des sysboles exportes de la DLL dll_core.dll
- *************
+  ***************              Listage des fonctions exportees de la DLL              *******************
  * [dll_core.dll] Found PE image
 ;
 ; Definition file of dll_core.dll
@@ -977,7 +979,9 @@ Le carre de 7.3 par 7.3 vaut 53.29.                   (from script python testdl
 DLL detaching from process...
   ***************************          Compilation de la DLL en mode 64 bits        *******************
 gcc (MinGW-W64 x86_64-ucrt-posix-seh, built by Brecht Sanders) 13.2.0
-  ***************************                Generation de la DLL en une passe                    *******************
+  ***************************          Generation de la DLL en deux passes          *******************
+  ***************       Compilation de la DLL avec MingW64 inclus dans Winlibs               *****************
+  ***************          Edition de liens de la DLL avec MingW64 inclus dans Winlibs       *******************
 EXPORTS
     Adddbl @1
     Addint @2
@@ -990,7 +994,7 @@ EXPORTS
     Squarint @9
     Subdbl @10
     Subint @11
-  ************                                   Dump des sysboles exportes de la DLL dll_core64.dll                           *************
+  ***************              Listage des fonctions exportees de la DLL dll_core64.dll            *******************
  * [dll_core64.dll] Found PE+ image
 ;
 ; Definition file of dll_core64.dll
@@ -1010,7 +1014,7 @@ Squardbl
 Squarint
 Subdbl
 Subint
-  ************     Generation et lancement du premier programme de test de la DLL en mode implicite.      *************
+  ************     Generation et lancement du premier programme de test de la DLL en mode implicite.    *************
 DLL attaching to process...
 Hello from a DLL!
 ----------------------       Lancement des operations arithmetiques avec des entiers        -----------------------
@@ -1026,7 +1030,7 @@ La multiplication de 16.9 par 7.3 vaut 123.37. (from application with implicit l
 La division de 16.9 par 7.3 vaut 2.315.        (from application with implicit load of DLL testdll_implicit64.exe)
 Le carre de 7.3 par 7.3 vaut 53.29.            (from application with implicit load of DLL testdll_implicit64.exe)
 DLL detaching from process...
-  ************     Generation et lancement du deuxieme programme de test de la DLL en mode explicite.     ************
+  ************     Generation et lancement du deuxieme programme de test de la DLL en mode explicite.   ************
 DLL attaching to process...
 Hello from a DLL!
 ----------------------       Lancement des operations arithmetiques avec des entiers        -----------------------

@@ -49,7 +49,7 @@ set "PAR1=%~1"
 REM Mandatory, add to PATH the binary directory of compiler CLANG 32 bits included in MSYS2. You can adapt this directory at your personal software environment.
 SET PATH=C:\mingw32\bin;%PATH%
 gcc --version | find "gcc"
-if PAR1 == "TWO" (
+if "%PAR1%" == "TWO" (
 echo.  ***************************          Generation de la DLL en deux passes          *******************
 REM Options used with CLANG/LLVM compiler 64 bits (very similar with syntax of gcc compiler) :
 REM 	-Wall									-> set all warning during compilation
@@ -60,7 +60,7 @@ REM		-m32									-> set compilation to X86 Architecture (32 bits)
 REM 	-IC:\mingw32\lib\clang\17\include -> set the include path directory (you can add many option -Ixxxxxxx to adapt your list of include path directories)  
 REM 				Remark 1 : You can replace option -m32 by -m64 to "force" compilation or linkage to X64 architecture
 echo.  ***************       Compilation de la DLL avec MSYS2  CLANG 32 bits              *****************
-gcc -Wall -c -o dll_core.obj src\dll_core.c -DBUILD_DLL -D_WIN32 -DNDEBUG -m32 -IC:\mingw32\lib\clang\17\include -IC:\mingw32\i686-w64-mingw32\include
+gcc -Wall -c -o dll_core.obj src\dll_core.c -DBUILD_DLL -D_WIN32 -DNDEBUG -m32  -IC:\mingw32\i686-w64-mingw32\include
 REM Options used with linker CLANG/LLVM 64 bits (very similar with syntax of gcc compiler) :
 REM 	-s 										-> "s[trip]", remove all symbol table and relocation information from the executable. 
 REM		-shared									-> generate a shared library => on Window, generate a DLL (Dynamic Linked Library)
@@ -127,7 +127,7 @@ set "PAR1=%~1"
 REM      Mandatory, add to PATH the binary directory of compiler CLANG 64 bits included in MSYS2. You can adapt this directory at your personal software environment.
 SET PATH=C:\mingw64\bin;%PATH%
 gcc --version | find "gcc"
-if PAR1 == "TWO" (
+if "%PAR1%" == "TWO" (
 echo.  ***************************          Generation de la DLL en deux passes          *******************
 REM Options used with CLANG/LLVM compiler 64 bits (very similar with syntax of gcc compiler) :
 REM 	-Wall									-> set all warning during compilation
@@ -138,7 +138,7 @@ REM		-m64									-> set compilation to X64 Architecture (64 bits)
 REM 	-IC:\mingw32\lib\clang\17\include -> set the include path directory (you can add many option -Ixxxxxxx to adapt your list of include path directories)  
 REM 				Remark 1 : You can replace option -m64 by -m32 to "force" compilation or linkage to X86 architecture
 echo.  ***************       Compilation de la DLL avec MingW64 inclus dans Winlibs               *****************
-gcc -Wall -c -o dll_core64.obj src\dll_core.c -DBUILD_DLL -D_WIN32 -DNDEBUG -m64 -IC:\mingw64\lib\clang\17\include -IC:\mingw64\x86_64-w64-mingw32\include
+gcc -Wall -c -o dll_core64.obj src\dll_core.c -DBUILD_DLL -D_WIN32 -DNDEBUG -m64 -IC:\mingw64\x86_64-w64-mingw32\include
 REM Options used with linker CLANG/LLVM 64 bits (very similar with syntax of gcc compiler) :
 REM 	-s 										-> "s[trip]", remove all symbol table and relocation information from the executable. 
 REM		-shared									-> generate a shared library => on Window, generate a DLL (Dynamic Linked Library)
